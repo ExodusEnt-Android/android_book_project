@@ -1,2 +1,3 @@
 - 이동훈 [작업 README](https://github.com/ExodusEnt-Android/android_book_project/blob/realize12/README.md)
-- 김민규 [mingue0605](https://github.com/mingue0605)
+- 김민규 
+- 정상민
