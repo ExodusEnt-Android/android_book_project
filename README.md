@@ -1,3 +1,3 @@
-- 이동훈 [작업 README](https://github.com/ExodusEnt-Android/android_book_project/blob/realize12/README.md)
+- 이동훈 [작업 브랜치](https://github.com/ExodusEnt-Android/android_book_project/tree/realize12)
 - 김민규 
 - 정상민
