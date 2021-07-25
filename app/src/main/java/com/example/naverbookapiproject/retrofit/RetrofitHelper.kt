@@ -4,7 +4,11 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitHelper {
+object RetrofitHelper {
+
+    val apiServices:ApiServices by lazy {
+        retrofit.create(ApiServices::class.java)
+    }
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()

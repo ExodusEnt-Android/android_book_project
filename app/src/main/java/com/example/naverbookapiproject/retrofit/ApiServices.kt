@@ -1,5 +1,6 @@
 package com.example.naverbookapiproject.retrofit
 
+import com.example.naverbookapiproject.Model.GetBookData
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -12,6 +13,6 @@ interface ApiServices {
     @GET("book.json")
     fun getBookSearchResult(
         @Query("query") searchedBookName:String
-    ): Call<ResponseBody>
+    ): Call<GetBookData.SearchedBooks>
 
 }
