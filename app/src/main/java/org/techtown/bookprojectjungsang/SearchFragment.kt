@@ -7,9 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,11 +20,12 @@ import org.techtown.bookprojectjungsang.model.BookModelItem
 import org.techtown.bookprojectjungsang.recyclerview.BookSearchRepositoryDecoration
 import org.techtown.bookprojectjungsang.retrofit.BookSearchApi
 import org.techtown.bookprojectjungsang.retrofit.BookSearchService
+import org.techtown.bookprojectjungsang.room.BookDatabase
 import org.techtown.bookprojectjungsang.viewmodel.BookSearchRepository
 import org.techtown.bookprojectjungsang.viewmodel.MainViewModel
 import org.techtown.bookprojectjungsang.viewmodel.MainViewModelFactory
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(),BookRcyAdapter.onBookMarkCheckListener {
 
     //viewBinding
     private var _binding : FragmentSearchBinding? = null
@@ -40,6 +41,9 @@ class SearchFragment : Fragment() {
 
     //list
     private lateinit var bookList:ArrayList<BookModelItem>
+
+    //database
+    private lateinit var bookDatabase: BookDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,16 +76,24 @@ class SearchFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(MainViewModel::class.java)
 
         viewModel.bookSearchRepositories.observe(requireActivity()){
-            updateRepositories(it)
+//            updateRepositories(it)
         }
 
     }
 
     private fun initSet(savedInstanceState: Bundle?) {
+
+        //database setting
+        bookDatabase = BookDatabase.getInstance(requireContext())!!
+
         // API 셋해주기.
         bookServiceApi = BookSearchService.client
         bookList = ArrayList<BookModelItem>()
-        mBookSearchRepositoryAdapter = BookRcyAdapter(requireActivity(), bookList)
+        mBookSearchRepositoryAdapter =
+            BookRcyAdapter(requireActivity(), bookList)
+            { v: View, position: Int, item:BookModelItem ->
+                onBookMarkCheck(v, position, item)
+            }
 
         binding.bookRcy.run {
             setHasFixedSize(true)
@@ -95,27 +107,27 @@ class SearchFragment : Fragment() {
     }
 
     private fun updateRepositories(repos: ArrayList<BookModelItem>){
-        if(::mBookSearchRepositoryAdapter.isInitialized){
-            mBookSearchRepositoryAdapter.update(repos)
-        } else {
-            mBookSearchRepositoryAdapter = BookRcyAdapter(requireActivity(), repos).apply {
-                listener = object : BookRcyAdapter.OnBookSearchRepositoryClickListener{
-                    override fun onItemClick(position: Int) {
-                        mBookSearchRepositoryAdapter.getItem(position).run {
-                            openNaverBookUrl(image)
-                        }
-                    }
-                }
-            }
-
-            binding.bookRcy.run {
-                setHasFixedSize(true)
-                layoutManager = LinearLayoutManager(requireActivity())
-                adapter = mBookSearchRepositoryAdapter
-                addItemDecoration(BookSearchRepositoryDecoration(6, 6))
-
-            }
-        }
+//        if(::mBookSearchRepositoryAdapter.isInitialized){
+//            mBookSearchRepositoryAdapter.update(repos)
+//        } else {
+//            mBookSearchRepositoryAdapter = BookRcyAdapter(requireActivity(), repos).apply {
+//                listener = object : BookRcyAdapter.OnBookSearchRepositoryClickListener{
+//                    override fun onItemClick(position: Int) {
+//                        mBookSearchRepositoryAdapter.getItem(position).run {
+//                            openNaverBookUrl(image)
+//                        }
+//                    }
+//                }
+//            }
+//
+//            binding.bookRcy.run {
+//                setHasFixedSize(true)
+//                layoutManager = LinearLayoutManager(requireActivity())
+//                adapter = mBookSearchRepositoryAdapter
+//                addItemDecoration(BookSearchRepositoryDecoration(6, 6))
+//
+//            }
+//        }
     }
 
     private fun openNaverBookUrl(imageUrl: String) {
@@ -167,5 +179,26 @@ class SearchFragment : Fragment() {
 
     companion object {
 
+    }
+
+    override fun onBookMarkCheck(v: View?, position: Int, item:BookModelItem) {
+        when(v?.id){
+            R.id.book_mark_cb -> {
+                //해당 아이템 추가.
+                if((v as CheckBox).isChecked){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        bookDatabase.runInTransaction {
+                            bookDatabase.bookDao().insert(item)
+                        }
+                    }
+                } else {//해당 아이템 삭제.
+                    CoroutineScope(Dispatchers.IO).launch {
+                        bookDatabase.runInTransaction {
+                            bookDatabase.bookDao().delete(item)
+                        }
+                    }
+                }
+            }
+        }
     }
 }

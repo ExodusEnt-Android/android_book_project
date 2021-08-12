@@ -2,10 +2,13 @@ package org.techtown.bookprojectjungsang
 
 import android.content.Context
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
@@ -22,11 +25,17 @@ import org.techtown.bookprojectjungsang.viewmodel.BookSearchRepository
 import org.techtown.bookprojectjungsang.viewmodel.BookSearchRepositoryDiffCallBack
 
 class BookRcyAdapter(private val mContext: Context,
-                     private var mItems: ArrayList<BookModelItem>
+                     private var mItems: ArrayList<BookModelItem>,
+                     private val bookMarkCheck: (View, Int, BookModelItem) -> Unit
 ) : RecyclerView.Adapter<BookRcyAdapter.ViewHolder>() {
 
     interface OnBookSearchRepositoryClickListener {
         fun onItemClick(position: Int)
+    }
+
+    //북마크 클릭 리스너.
+    interface onBookMarkCheckListener {
+        fun onBookMarkCheck(v: View?, position: Int, item:BookModelItem)
     }
 
     var listener: OnBookSearchRepositoryClickListener? = null
@@ -70,6 +79,7 @@ class BookRcyAdapter(private val mContext: Context,
 
         private val bookImageView: AppCompatImageView = view.findViewById(R.id.book_iv)
         private val bookTitleTextView: AppCompatTextView = view.findViewById(R.id.name_book_tv)
+        private val bookCheckBox: AppCompatCheckBox = view.findViewById(R.id.book_mark_cb)
 
         init {
             view.setOnClickListener {
@@ -78,6 +88,13 @@ class BookRcyAdapter(private val mContext: Context,
         }
 
         override fun bind(item: BookModelItem, position: Int) {
+
+            //API17에서 깨진다고 하여추가.
+            bookCheckBox.setButtonDrawable(R.drawable.check_selector)
+
+            bookCheckBox.setOnClickListener {
+                bookMarkCheck(it,position, item)
+            }
 
             item.run {
                 Glide.with(mContext)
