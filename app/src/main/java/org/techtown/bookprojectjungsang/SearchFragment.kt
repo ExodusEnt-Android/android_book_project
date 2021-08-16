@@ -42,9 +42,6 @@ class SearchFragment : Fragment(),BookRcyAdapter.onBookMarkCheckListener {
     //list
     private lateinit var bookList:ArrayList<BookModelItem>
 
-    //database
-    private lateinit var bookDatabase: BookDatabase
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -82,9 +79,6 @@ class SearchFragment : Fragment(),BookRcyAdapter.onBookMarkCheckListener {
     }
 
     private fun initSet(savedInstanceState: Bundle?) {
-
-        //database setting
-        bookDatabase = BookDatabase.getInstance(requireContext())!!
 
         // API 셋해주기.
         bookServiceApi = BookSearchService.client
@@ -187,14 +181,14 @@ class SearchFragment : Fragment(),BookRcyAdapter.onBookMarkCheckListener {
                 //해당 아이템 추가.
                 if((v as CheckBox).isChecked){
                     CoroutineScope(Dispatchers.IO).launch {
-                        bookDatabase.runInTransaction {
-                            bookDatabase.bookDao().insert(item)
+                        MainActivity.bookDatabase.runInTransaction {
+                            MainActivity.bookDatabase.bookDao().insert(item)
                         }
                     }
                 } else {//해당 아이템 삭제.
                     CoroutineScope(Dispatchers.IO).launch {
-                        bookDatabase.runInTransaction {
-                            bookDatabase.bookDao().delete(item)
+                        MainActivity.bookDatabase.runInTransaction {
+                            MainActivity.bookDatabase.bookDao().delete(item)
                         }
                     }
                 }

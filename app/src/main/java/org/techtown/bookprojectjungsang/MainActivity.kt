@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.techtown.bookprojectjungsang.databinding.ActivityMainBinding
+import org.techtown.bookprojectjungsang.room.BookDatabase
 
 
 class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +22,9 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
     }
 
     private fun setInit() {
+        //database setting
+        bookDatabase = BookDatabase.getInstance(applicationContext)!!
+
         supportFragmentManager.beginTransaction().add(R.id.frame_frag,SearchFragment()).commitAllowingStateLoss()
         binding.bottomNav.setOnNavigationItemSelectedListener(this)
     }
@@ -38,5 +42,10 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
         }
 
         return false
+    }
+
+    companion object{
+        //database
+        lateinit var bookDatabase: BookDatabase
     }
 }

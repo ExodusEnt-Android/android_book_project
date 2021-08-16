@@ -1,9 +1,7 @@
 package org.techtown.bookprojectjungsang.room
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Update
+import androidx.room.*
+import org.techtown.bookprojectjungsang.model.BookModel
 import org.techtown.bookprojectjungsang.model.BookModelItem
 
 @Dao
@@ -17,4 +15,7 @@ interface BookDao {
 
     @Delete
     fun delete(book:BookModelItem)
+
+    @Query("SELECT * from bookTable")
+    fun selectAllBook():List<BookModelItem>
 }
