@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.techtown.bookprojectjungsang.compose.NotesFragment
 import org.techtown.bookprojectjungsang.databinding.ActivityMainBinding
 import org.techtown.bookprojectjungsang.room.BookDatabase
 
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
                 return true
             }
             R.id.baggage -> {
-                supportFragmentManager.beginTransaction().replace(R.id.frame_frag, StoreFragment()).commitAllowingStateLoss()
+                supportFragmentManager.beginTransaction().replace(R.id.frame_frag, NotesFragment()).commitAllowingStateLoss()
                 return true
             }
         }

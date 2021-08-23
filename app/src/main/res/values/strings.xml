@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BookProjectJungSang</string>
+    <string name="title_activity_store_fragment_compose">StoreFragmentCompose</string>
+    <string name="title_activity_note">NoteActivity</string>
 </resources>

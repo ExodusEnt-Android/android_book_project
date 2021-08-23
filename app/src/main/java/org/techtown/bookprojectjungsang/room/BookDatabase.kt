@@ -6,11 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import org.techtown.bookprojectjungsang.SearchFragment
 import org.techtown.bookprojectjungsang.model.BookModelItem
+import org.techtown.bookprojectjungsang.model.Note
 
-@Database(entities = [BookModelItem::class], version = 1)
+@Database(entities = [BookModelItem::class, Note::class], version = 1)
 abstract class BookDatabase:RoomDatabase() {
 
     abstract fun bookDao(): BookDao
+    abstract fun notesDao(): NotesDao
 
     companion object{
         private var instance: BookDatabase? = null
