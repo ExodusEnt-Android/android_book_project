@@ -6,7 +6,10 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
+    //Android Studio 4.0 이상 선언 방식
+    buildFeatures {
+        viewBinding = true
+    }
     defaultConfig {
         applicationId "com.example.bookmark"
         minSdkVersion 16
@@ -15,6 +18,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "BASE_URL_NAVER_API", "\"https://openapi.naver.com/\""
+        buildConfigField "String", "CLIENT_ID", "\"IntEsoCFJH0w8SCIQXWm\""
+        buildConfigField "String", "CLIENT_SECRET", "\"iFcbgpZnw4\""
     }
 
     buildTypes {
@@ -42,4 +49,17 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+// Gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+    // Retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.7.0'
+    // Retrofit2-Gson converter
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
 }
