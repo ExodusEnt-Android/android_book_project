@@ -16,6 +16,9 @@ interface BookDao {
     @Delete
     fun delete(book:BookModelItem)
 
+    @Query("SELECT * from bookTable where isbn=:isbn")
+    fun selectBook(isbn:String?):BookModelItem?
+
     @Query("SELECT * from bookTable")
     fun selectAllBook():List<BookModelItem>
 }

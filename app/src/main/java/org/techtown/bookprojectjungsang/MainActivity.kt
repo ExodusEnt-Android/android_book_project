@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
 
     private fun setInit() {
         //database setting
-        bookDatabase = BookDatabase.getInstance(applicationContext)!!
+//        bookDatabase = BookDatabase.getInstance(applicationContext)!!
 
         supportFragmentManager.beginTransaction().add(R.id.frame_frag,SearchFragment()).commitAllowingStateLoss()
         binding.bottomNav.setOnNavigationItemSelectedListener(this)
@@ -47,6 +47,6 @@ class MainActivity : AppCompatActivity(),BottomNavigationView.OnNavigationItemSe
 
     companion object{
         //database
-        lateinit var bookDatabase: BookDatabase
+//        lateinit var bookDatabase: BookDatabase
     }
 }
